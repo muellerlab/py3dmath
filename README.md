@@ -10,7 +10,7 @@ How to install
 Install directly from the Github repository:
 
 1. Clone this repository somewhere convenient: `git clone https://github.com/muellerlab/py3dmath.git`
-2. Install the package (we'll do a "develop" install, so any changes are immediately available):  `pip install -e .` (you'll probably need to be administrator, i.e. prepend `sudo`)
+2. Install the package (we'll do a "develop" install, so any changes are immediately available):  `sudo -H pip install -e .` (you'll probably need to be administrator, i.e. prepend `sudo`)
 3. You're ready to go: try running the examples in the `example` folder.
 
 
