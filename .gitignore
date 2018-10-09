@@ -1,1 +1,3 @@
 py3dmath.egg-info/*
+*.pyc
+py3dmath/__pycache__/*
