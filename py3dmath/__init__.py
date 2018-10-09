@@ -22,6 +22,7 @@ class Vec3:
                 self.y = inval.y
                 self.z = inval.z
             elif type(inval).__name__ == 'ndarray':
+                inval = inval.flatten()
                 self.x = inval[0]
                 self.y = inval[1]
                 self.z = inval[2]
@@ -73,6 +74,11 @@ class Vec3:
         
     def to_unit_vector(self):
         return self/self.norm2()
+    
+    def to_cross_product_matrix(self):
+        return np.matrix([[0,       -self.z,  +self.y],
+                          [+self.z,       0,  -self.x], 
+                          [-self.y, +self.x,        0]])
         
     def __add__(self, other):
         return Vec3([self.x+other.x,self.y+other.y,self.z+other.z])
@@ -191,6 +197,14 @@ class Rotation:
     def to_rodrigues_vector(self):
         """Outputs the corresponding Rodrigues vector, as used e.g. by openCV"""
         return Vec3(np.array([self.q[1],self.q[2],self.q[3]])/self.q[0])
+    
+    
+    def to_vector_part_of_quaternion(self):
+        if self.q[0] >= 0:
+            return Vec3(self.q[1], self.q[2], self.q[3])
+        else:
+            return -Vec3(self.q[1], self.q[2], self.q[3])
+        
 
     def to_euler_YPR(self):
         y = np.arctan2(2.0*self.q[1]*self.q[2] + 2.0*self.q[0]*self.q[3], self.q[1]*self.q[1] + self.q[0]*self.q[0] - self.q[3]*self.q[3] - self.q[2]*self.q[2])
@@ -208,9 +222,9 @@ class Rotation:
         
 
     def to_rotation_vector(self):
-        n =  Vec3([self.q[1],self.q[2],self.q[3]])
+        n =  self.to_vector_part_of_quaternion()
         theta = np.arcsin(n.norm2())*2
-        if(abs(theta) < 1e-9):
+        if(abs(theta) < 1e-15):
             return Vec3(0,0,0)
         
         return theta*n.to_unit_vector()
