@@ -50,6 +50,10 @@ class Vec3:
 
 
         return
+    
+    @classmethod
+    def from_list(cls, list):
+        return cls(list[0], list[1], list[2])
 
     def norm2(self):
         return (self.x**2+self.y**2+self.z**2)**(1/2)
@@ -140,6 +144,10 @@ class Vec3:
 class Rotation:   
     def __init__(self, q0, q1, q2, q3):
         self.q=np.array([q0,q1,q2,q3])
+
+    @classmethod
+    def from_list(cls, qList):
+        return cls(qList[0],qList[1],qList[2],qList[3])
     
     def normalise(self):
         self.q = self.q/np.sqrt(np.dot(self.q,self.q))
